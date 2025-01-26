@@ -1,4 +1,7 @@
 from PyQt6.QtWidgets import *
+import random
+
+import questions
 
 app = QApplication([])
 window = QWidget()
@@ -12,10 +15,10 @@ group_line = QVBoxLayout()
 group_h_line = QHBoxLayout()
 group_h_line2 = QHBoxLayout()
 
-ans1 = QRadioButton('Building')
-ans2 = QRadioButton('Apple')
-ans3 = QRadioButton('Chair')
-ans4 = QRadioButton('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
+ans1 = QRadioButton()
+ans2 = QRadioButton()
+ans3 = QRadioButton()
+ans4 = QRadioButton()
 result_lbl = QLabel('Результат')
 result_lbl.hide()
 next_btn = QPushButton('Наступне запитання')
@@ -42,7 +45,7 @@ rest_btn = QPushButton('Відпочити')
 menu_btn = QPushButton('Меню')
 #Quiz Elements
 answer_btn = QPushButton('Відповісти')
-quest_lbl = QLabel('Яблуко')
+quest_lbl = QLabel()
 
 
 line1.addWidget(menu_btn)
@@ -58,7 +61,39 @@ mainline.addWidget(quest_lbl)
 mainline.addWidget(ans_box)
 mainline.addWidget(answer_btn)
 mainline.addWidget(next_btn)
-window.setLayout(mainline)
 
+answers = [ans1, ans2, ans3, ans4]
+def set_quest():
+    try:
+        random.shuffle(answers)
+        quest = questions.questions[questions.counter]
+        quest_lbl.setText(quest["Запитання"])
+        answers[0].setText(quest['Правильна відповідь'])
+        answers[1].setText(quest['Неправильна відповідь'])
+        answers[2].setText(quest['Неправильна відповідь1'])
+        answers[3].setText(quest['Неправильна відповідь2'])
+    except:
+        print('Більше запитань немає')
+def ans_func():
+    for answer in answers:
+        answer.hide()
+    answer_btn.hide()
+    result_lbl.show()
+    next_btn.show()
+    if answers[0].isChecked():
+        result_lbl.setText("Правильно!")
+
+def next_quest():
+    questions.counter += 1
+    set_quest()
+    for answer in answers:
+        answer.show()
+
+answer_btn.clicked.connect(ans_func)
+next_btn.clicked.connect(next_quest)
+
+set_quest()
+
+window.setLayout(mainline)
 window.show()
 app.exec()
