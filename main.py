@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import *
 import random
 
 import questions
+from menu import menu_window
 
 app = QApplication([])
 window = QWidget()
@@ -55,7 +56,6 @@ line1.addWidget(rest_time)
 line1.addWidget(rest_text)
 
 mainline.addLayout(line1)
-mainline.addStretch(1)
 mainline.addWidget(quest_lbl)
 
 mainline.addWidget(ans_box)
@@ -86,11 +86,15 @@ def ans_func():
 def next_quest():
     questions.counter += 1
     set_quest()
+    next_btn.hide()
+    answer_btn.show()
+
     for answer in answers:
         answer.show()
 
 answer_btn.clicked.connect(ans_func)
 next_btn.clicked.connect(next_quest)
+menu_btn.clicked.connect(menu_window)
 
 set_quest()
 
