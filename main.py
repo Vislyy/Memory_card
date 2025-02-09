@@ -5,6 +5,7 @@ import questions
 from menu import menu_window
 
 app = QApplication([])
+
 window = QWidget()
 window.resize(350, 50)
 
