@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import *
+from PyQt5.QtWidgets import *
 import random
 
 import questions
@@ -64,6 +64,8 @@ mainline.addWidget(answer_btn)
 mainline.addWidget(next_btn)
 
 answers = [ans1, ans2, ans3, ans4]
+global result
+result = 0
 def set_quest():
     try:
         random.shuffle(answers)
@@ -73,9 +75,11 @@ def set_quest():
         answers[1].setText(quest['Неправильна відповідь'])
         answers[2].setText(quest['Неправильна відповідь1'])
         answers[3].setText(quest['Неправильна відповідь2'])
+        questions.counter += 1
     except:
         print('Більше запитань немає')
 def ans_func():
+    global result
     for answer in answers:
         answer.hide()
     answer_btn.hide()
@@ -83,9 +87,12 @@ def ans_func():
     next_btn.show()
     if answers[0].isChecked():
         result_lbl.setText("Правильно!")
+        result += 1
+        print(result)
+    else:
+        result_lbl.setText("Неправильно!")
 
 def next_quest():
-    questions.counter += 1
     set_quest()
     next_btn.hide()
     answer_btn.show()
